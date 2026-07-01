@@ -1,0 +1,64 @@
+name: Deploy Preview to GitHub Pages
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build React App
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          publish_branch: gh-pages 
+            
+      - name: Update Index HTML
+        run: |
+          sed -i 's|/static/|/FinePoint-site/static/|g' ./build/index.html
+          sed -i 's|href="/|href="/FinePoint-site/|g' ./build/index.html
+          sed -i 's|src="/|src="/FinePoint-site/|g' ./build/index.html
+          sed -i 's|"/FinePoint-site/FinePoint-site/|"/FinePoint-site/|g' ./build/index.html
+              
+      - name: Commit and Push Changes
+        run: |
+              git config --global user.name 'GitHub Actions'
+              git config --global user.email 'actions@users.noreply.github.com'
+              git pull --allow-unrelated-histories --no-rebase origin gh-pages
+              git checkout -b gh-pages  # Switch to the gh-pages branch or create it if it doesn't exist
+              cp ./build/index.html index.html
+              git add -f index.html
+              git commit -m 'Update index.html paths for GitHub Pages'
+              git push origin gh-pages  # Push changes to the gh-pages branch
+            
+      - name: Comment Preview URL on Pull Request
+        if: success() && github.event.pull_request
+        uses: actions/github-script@v5
+        with:
+                github-token: ${{ secrets.GITHUB_TOKEN }}
+                script: |
+                  const { data: { html_url: issueUrl } } = await github.rest.issues.createComment({
+                    issue_number: context.issue.number,
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    body: `Preview available at: https://finepo-nt.github.io/FinePoint-site`
+                  });
+                  console.log(`Commented on ${issueUrl}`);
+                
