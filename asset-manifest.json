@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.af71624e.css",
-    "main.js": "/static/js/main.39b0db9a.js",
-    "static/js/787.28cb0dcd.chunk.js": "/static/js/787.28cb0dcd.chunk.js",
-    "index.html": "/index.html",
-    "main.af71624e.css.map": "/static/css/main.af71624e.css.map",
-    "main.39b0db9a.js.map": "/static/js/main.39b0db9a.js.map",
-    "787.28cb0dcd.chunk.js.map": "/static/js/787.28cb0dcd.chunk.js.map"
+    "main.css": "/FinePointDesigns-Site/static/css/main.af71624e.css",
+    "main.js": "/FinePointDesigns-Site/static/js/main.469f76ad.js",
+    "static/js/787.28cb0dcd.chunk.js": "/FinePointDesigns-Site/static/js/787.28cb0dcd.chunk.js",
+    "index.html": "/FinePointDesigns-Site/index.html",
+    "main.af71624e.css.map": "/FinePointDesigns-Site/static/css/main.af71624e.css.map",
+    "main.469f76ad.js.map": "/FinePointDesigns-Site/static/js/main.469f76ad.js.map",
+    "787.28cb0dcd.chunk.js.map": "/FinePointDesigns-Site/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.af71624e.css",
-    "static/js/main.39b0db9a.js"
+    "static/js/main.469f76ad.js"
   ]
 }
