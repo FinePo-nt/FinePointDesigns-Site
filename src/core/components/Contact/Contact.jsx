@@ -20,11 +20,25 @@ const Contact = () => {
   const handleChange = (e) =>
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: wire to Formspree, EmailJS, or a serverless function
-    console.log('Form submitted:', form);
-    setSubmitted(true);
+    try {
+      const res = await fetch('https://formspree.io/f/mwvgplyn', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          firstName:    form.firstName,
+          lastName:     form.lastName,
+          email:        form.email,
+          businessType: form.businessType,
+          message:      form.message,
+        }),
+      });
+      if (res.ok) setSubmitted(true);
+      else console.error('Formspree error:', await res.text());
+    } catch (err) {
+      console.error('Submit failed:', err);
+    }
   };
 
   return (
@@ -61,7 +75,7 @@ const Contact = () => {
               <TrustItem
                 icon="🎨"
                 title="Custom built"
-                body="Every site is designed from scratch, never a template."
+                body="Every site is designed from scratch — never a template."
               />
               <TrustItem
                 icon="🚀"
